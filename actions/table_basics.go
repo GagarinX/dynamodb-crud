@@ -2,7 +2,6 @@ package actions
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue"
@@ -44,7 +43,7 @@ func(b TableBasics) GetOrder(customerName string, orderID int) (Order, error) {
 	}
 
 	if res.Item == nil {
-		return order, fmt.Errorf("order with customerName %s and orderID %d not found", customerName, orderID)
+		return order, NewNotFoundError(customerName, orderID)
 	}
 
 	err = attributevalue.UnmarshalMap(res.Item, &order)
